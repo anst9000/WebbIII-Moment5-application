@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mina kurser</title>
+    <script src="https://kit.fontawesome.com/6ad2b68ccb.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <!-- Image and text -->
+    <nav class="navbar justify-content-center">
+      <a class="navbar-brand" href="javascript:void(0)">
+        <img
+          src="img/winnie_the_pooh.jpg"
+          width="30"
+          height="30"
+          class="d-inline-block align-top"
+          alt="winnie_the_pooh"
+        />
+        Anders Strömberg
+      </a>
+    </nav>
+    <div class="container">
+      <h1>Dessa kurser har jag läst</h1>
+
+      <div class="main-list" id="all-courses"></div>
+
+      <h1>Lägg till kurs</h1>
+      <form action="create.php" method="POST">
+        <div class="form-group">
+          Name: <input class="form-control" type="text" name="name" /><br />
+          Code: <input class="form-control" type="text" name="code" /><br />
+          Progression: <input class="form-control" type="text" name="progression" /><br />
+          Syllabus: <input class="form-control" type="text" name="syllabus" /><br />
+          <input type="submit" class="btn btn-primary" id="create" value="Create Course" />
+        </div>
+      </form>
+
+      <div class="create-list" id="create-course"></div>
+
+      <div id="demo"></div>
+    </div>
+    <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+              ================================================== -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+
+  <!-- <h1>Visa en specifik kurs</h1>
+          <form action="read_single.php" method="POST">
+            ID: <input type="number" name="id" /><br />
+            <input type="submit" class="btn btn-primary" id="single" value="Show Course" />
+          </form>
+
+          <h1>Uppdatera kurs</h1>
+          <form action="update.php" method="POST">
+            ID: <input type="number" name="id" /><br />
+            Name: <input type="text" name="name" /><br />
+            Code: <input type="text" name="code" /><br />
+            Progression: <input type="text" name="progression" /><br />
+            Syllabus: <input type="text" name="syllabus" /><br />
+            <input type="submit" class="btn btn-primary" id="update" value="Update Course" />
+          </form>
+
+          <h1>Ta bort kurs</h1>
+          <form action="delete.php" method="POST">
+            ID: <input type="number" name="id" /><br />
+            <input type="submit" class="btn btn-primary" id="delete" value="Delete Course" />
+          </form> -->
+</html>

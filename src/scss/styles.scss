@@ -1,0 +1,30 @@
+@import 'reset';
+
+$color: firebrick;
+
+body {
+  /* background-color: firebrick; */
+  color: black;
+  background-color: #afc2d5;
+}
+
+.navbar {
+  background-color: #afc2d5;
+  background-color: #7f7b82;
+}
+
+.navbar-brand {
+  color: #000;
+  font-size: 3.5rem;
+  img {
+    width: 75px;
+    height: 75px;
+  }
+}
+
+#all-courses-table-head {
+  background-color: yellow;
+}
+#all-courses-table-body {
+  background-color: grey;
+}
