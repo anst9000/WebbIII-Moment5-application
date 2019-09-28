@@ -29,10 +29,11 @@ $(document).ready(_ => {
         '<table id="all-courses-table" class="table cell-border compact stripe" cellspacing="0" width="100%">' +
         '<thead id="all-courses-table-head">' +
         '<tr>' +
-        '<th class="th-sm">Kurskod</th>' +
         '<th class="th-sm">Kursnamn</th>' +
-        '<th class="th-sm">Progression</th>' +
-        '<th class="th-sm">Syllabus</th>' +
+        '<th class="th-sm">Kurskod</th>' +
+        '<th class="th-sm">Nivå</th>' +
+        '<th class="th-sm">Kursplan</th>' +
+        '<th class="th-sm">Ändra/Ta bort</th>' +
         '</tr>' +
         '</thead>' +
         '<tbody id="all-courses-table-body">';
@@ -47,7 +48,10 @@ $(document).ready(_ => {
           '</td><td>' +
           result.records[i].progression +
           '</td><td>' +
-          `<a href="${result.records[i].syllabus}" target="_blank"><button>Kursplan</button></a>` +
+          `<a href="${result.records[i].syllabus}" target="_blank"><button type="button" class="btn btn-primary">Kursplan</button></a>` +
+          '</td><td>' +
+          `<a href="${result.records[i].syllabus}" target="_blank"><button type="button" class="btn btn-secondary">Ändra</button></a>` +
+          `<a href="${result.records[i].syllabus}" target="_blank"><button type="button" class="btn btn-danger">Ta bort</button></a>` +
           '</td></tr>';
       }
       output += '</tbody></table>';

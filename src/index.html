@@ -33,27 +33,79 @@
         Anders Strömberg
       </a>
     </nav>
+
     <div class="container">
-      <h1>Dessa kurser har jag läst</h1>
+      <div class="list-courses">
+        <h1>Dessa kurser har jag läst</h1>
+        <div class="main-list" id="all-courses"></div>
+      </div>
 
-      <div class="main-list" id="all-courses"></div>
-
-      <h1>Lägg till kurs</h1>
-      <form action="create.php" method="POST">
-        <div class="form-group">
-          Name: <input class="form-control" type="text" name="name" /><br />
-          Code: <input class="form-control" type="text" name="code" /><br />
-          Progression: <input class="form-control" type="text" name="progression" /><br />
-          Syllabus: <input class="form-control" type="text" name="syllabus" /><br />
-          <input type="submit" class="btn btn-primary" id="create" value="Create Course" />
+      <div class="mid-section">
+        <!-- Section with add course form -->
+        <div class="add-course">
+          <h1>Lägg till kurs</h1>
+          <form action="create.php" method="POST">
+            <div class="form-group">
+              Kursnamn<input class="form-control" type="text" name="name" /><br />
+              Kurskod<input class="form-control" type="text" name="code" /><br />
+              Nivå (A, B, C, D, E)<input
+                class="form-control"
+                type="text"
+                name="progression"
+              /><br />
+              Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />
+              <input type="submit" class="btn btn-primary" id="create" value="Create Course" />
+            </div>
+          </form>
         </div>
-      </form>
+        <!-- Section with photos -->
+        <div class="photos">
+          <div id="section-a">
+            <h1>Information</h1>
+            <p>
+              Här finns en översikt av de kurser jag har läst under mina snart 2,5 år på
+              Mittuniversitets utbildning Datateknik, 180hp. De kurser som jag har läst finns
+              lagrade i en MySQL-databas som ligger på Miun:s server. Jag har skrivit en REST API i
+              PHP som också ligger på skolans server. Sen har jag gjort den här applikationen som
+              jobbar mot API:t.
+            </p>
+          </div>
+          <div id="section-b">
+            <img src="img/anders.jpg" alt="" />
+          </div>
+          <div id="section-c">
+            <img src="img/miun_summer.jpg" alt="" />
+          </div>
+        </div>
+      </div>
 
       <div class="create-list" id="create-course"></div>
 
       <div id="demo"></div>
     </div>
     <!-- /container -->
+
+    <!-- Footer -->
+    <section id="footer" class="py-4 bg-dark text-white-50">
+      <div class="container">
+        <div class="row text-center text-xs-center text-sm-left text-md-left">
+          <div class="col-xs-12 col-sm-4 col-md-4">
+            <p><span>Anders Strömberg</span></p>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4">
+            <p>
+              <span><i class="fas fa-phone"></i></span> 070 - 648 48 48
+            </p>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4">
+            <p>
+              <span><i class="fas fa-envelope-square"></i></span> coltlaboy@yahoo.se
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ./Footer -->
 
     <!-- Bootstrap core JavaScript
               ================================================== -->
