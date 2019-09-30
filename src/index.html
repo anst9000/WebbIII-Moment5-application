@@ -1,152 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Mina kurser</title>
-    <script src="https://kit.fontawesome.com/6ad2b68ccb.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
 
-  <body>
-    <!-- Image and text -->
-    <nav class="navbar justify-content-center">
-      <a class="navbar-brand" href="javascript:void(0)">
-        <img
-          src="img/winnie_the_pooh.jpg"
-          width="30"
-          height="30"
-          class="d-inline-block align-top"
-          alt="winnie_the_pooh"
-        />
-        Anders Strömberg
-      </a>
-    </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Mina kurser</title>
+  <script src="https://kit.fontawesome.com/6ad2b68ccb.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 
-    <div class="container">
-      <div class="list-courses">
-        <h1>Dessa kurser har jag läst</h1>
-        <div class="main-list" id="all-courses"></div>
-      </div>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 
-      <div class="mid-section">
-        <!-- Section with add course form -->
-        <div class="add-course">
-          <h1>Lägg till kurs</h1>
-          <form action="create.php" method="POST">
-            <div class="form-group">
-              Kursnamn<input class="form-control" type="text" name="name" /><br />
-              Kurskod<input class="form-control" type="text" name="code" /><br />
-              Nivå (A, B, C, D, E)<input
-                class="form-control"
-                type="text"
-                name="progression"
-              /><br />
-              Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />
-              <input type="submit" class="btn btn-primary" id="create" value="Create Course" />
-            </div>
-          </form>
-        </div>
-        <!-- Section with photos -->
-        <div class="photos">
-          <div id="section-a">
-            <h1>Information</h1>
-            <p>
-              Här finns en översikt av de kurser jag har läst under mina snart 2,5 år på
-              Mittuniversitets utbildning Datateknik, 180hp. De kurser som jag har läst finns
-              lagrade i en MySQL-databas som ligger på Miun:s server. Jag har skrivit en REST API i
-              PHP som också ligger på skolans server. Sen har jag gjort den här applikationen som
-              jobbar mot API:t.
-            </p>
-          </div>
-          <div id="section-b">
-            <img src="img/anders.jpg" alt="" />
-          </div>
-          <div id="section-c">
-            <img src="img/miun_summer.jpg" alt="" />
-          </div>
-        </div>
-      </div>
+<body>
+  <!-- Image and text -->
+  <nav class="navbar justify-content-center">
+    <a class="navbar-brand" href="javascript:void(0)">
+      <img src="img/winnie_the_pooh.jpg" width="30" height="30" class="d-inline-block align-top"
+        alt="winnie_the_pooh" />
+      Anders Strömberg
+    </a>
+  </nav>
 
-      <div class="create-list" id="create-course"></div>
+  <!-- CONTAINER -->
+  <div class="container">
 
-      <div id="demo"></div>
+
+    <!-- LIST COURSES -->
+    <div class="list-courses">
+      <h1>Dessa kurser har jag läst</h1>
+      <div class="main-list" id="all-courses"></div>
     </div>
-    <!-- /container -->
 
-    <!-- Footer -->
-    <section id="footer" class="py-4 bg-dark text-white-50">
-      <div class="container">
-        <div class="row text-center text-xs-center text-sm-left text-md-left">
-          <div class="col-xs-12 col-sm-4 col-md-4">
-            <p><span>Anders Strömberg</span></p>
+    <!-- MID SECTION -->
+    <div class="mid-section">
+      <!-- Section with add course form -->
+      <div class="add-course">
+        <h1>Lägg till kurs</h1>
+        <form action="create.php" method="POST">
+          <div class="form-group">
+            Kursnamn<input class="form-control" type="text" name="name" /><br />
+            Kurskod<input class="form-control" type="text" name="code" /><br />
+            Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" /><br />
+            Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />
+            <input type="submit" class="btn btn-primary" id="create" value="Create Course" />
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4">
-            <p>
-              <span><i class="fas fa-phone"></i></span> 070 - 648 48 48
-            </p>
-          </div>
-          <div class="col-xs-12 col-sm-4 col-md-4">
-            <p>
-              <span><i class="fas fa-envelope-square"></i></span> coltlaboy@yahoo.se
-            </p>
-          </div>
+        </form>
+      </div>
+      <!-- END Add course form -->
+
+      <!-- Section with photos -->
+      <div class="photos">
+        <div id="section-a">
+          <h1>Information</h1>
+          <p>
+            Här finns en översikt av de kurser jag har läst under mina snart 2,5 år på
+            Mittuniversitets utbildning Datateknik, 180hp. De kurser som jag har läst finns
+            lagrade i en MySQL-databas som ligger på Miun:s server. Jag har skrivit en REST API i
+            PHP som också ligger på skolans server. Sen har jag gjort den här applikationen som
+            jobbar mot API:t.
+          </p>
+        </div>
+        <div id="section-b">
+          <img src="img/anders.jpg" alt="" />
+        </div>
+        <div id="section-c">
+          <img class="miun-img" src="img/miun_summer.jpg" alt="" />
         </div>
       </div>
-    </section>
-    <!-- ./Footer -->
+      <!-- END Photos -->
+    </div>
+    <!-- END Mid section -->
+  </div>
+  <!-- END Container -->
 
-    <!-- Bootstrap core JavaScript
+  <div class="create-list" id="create-course"></div>
+
+  <!-- Update course -->
+  <div class="update-form1" id="update-course">
+    <form action="update.php" method="POST">
+      <input type="text" name="id" /><br />
+      <input type="text" name="name" /><br />
+      <input type="text" name="code" /><br />
+      <input type="text" name="progression" /><br />
+      <input type="text" name="syllabus" /><br />
+      <input type="text" class="btn btn-primary" id="update" value="Update Course" />
+    </form>
+  </div>
+  <!-- END Update course -->
+
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+          <button type="button" class="btn btn-primary">Spara ändringar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <section id="footer" class="py-4 bg-dark text-white-50">
+    <div class="container">
+      <div class="row text-center text-xs-center text-sm-left text-md-left">
+        <div class="col-xs-12 col-sm-4 col-md-4">
+          <p><span>Anders Strömberg</span></p>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4">
+          <p>
+            <span><i class="fas fa-phone"></i></span> 070 - 648 48 48
+          </p>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4">
+          <p>
+            <span><i class="fas fa-envelope-square"></i></span> coltlaboy@yahoo.se
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ./Footer -->
+
+  <!-- Bootstrap core JavaScript
               ================================================== -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
 
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="js/main.js"></script>
-  </body>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
 
-  <!-- <h1>Visa en specifik kurs</h1>
-          <form action="read_single.php" method="POST">
-            ID: <input type="number" name="id" /><br />
-            <input type="submit" class="btn btn-primary" id="single" value="Show Course" />
-          </form>
+<!--
+<h1>Visa en specifik kurs</h1>
+<form action="read_single.php" method="POST">
+ID: <input type="number" name="id" /><br />
+<input type="submit" class="btn btn-primary" id="single" value="Show Course" />
+</form>
 
-          <h1>Uppdatera kurs</h1>
-          <form action="update.php" method="POST">
-            ID: <input type="number" name="id" /><br />
-            Name: <input type="text" name="name" /><br />
-            Code: <input type="text" name="code" /><br />
-            Progression: <input type="text" name="progression" /><br />
-            Syllabus: <input type="text" name="syllabus" /><br />
-            <input type="submit" class="btn btn-primary" id="update" value="Update Course" />
-          </form>
+<h1>Ta bort kurs</h1>
+<form action="delete.php" method="POST">
+ID: <input type="number" name="id" /><br />
+<input type="submit" class="btn btn-primary" id="delete" value="Delete Course" />
+</form>
+-->
 
-          <h1>Ta bort kurs</h1>
-          <form action="delete.php" method="POST">
-            ID: <input type="number" name="id" /><br />
-            <input type="submit" class="btn btn-primary" id="delete" value="Delete Course" />
-          </form> -->
 </html>

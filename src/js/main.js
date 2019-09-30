@@ -39,19 +39,21 @@ $(document).ready(_ => {
         '<tbody id="all-courses-table-body">';
 
       for (let i in result.records) {
-        // console.log(result.records[i]);
+        console.log(result.records[i]);
+        let postID = result.records[i].id
+        let postName = result.records[i].name
+        let postCode = result.records[i].code
+        let postProg = result.records[i].progression
+        console.log('postID = ' + postID)
         output +=
-          '<tr><td>' +
-          result.records[i].name +
+          '<tr><td>' + postName +
+          '</td><td>' + postCode +
+          '</td><td>' + postProg +
           '</td><td>' +
-          result.records[i].code +
+          '<button id="' + postID + '" type="button" class="btn syllabus btn-primary">Kursplan</button>' +
           '</td><td>' +
-          result.records[i].progression +
-          '</td><td>' +
-          `<a href="${result.records[i].syllabus}" target="_blank"><button type="button" class="btn btn-primary">Kursplan</button></a>` +
-          '</td><td>' +
-          `<a href="${result.records[i].syllabus}" target="_blank"><button type="button" class="btn btn-secondary">Ändra</button></a>` +
-          `<a href="${result.records[i].syllabus}" target="_blank"><button type="button" class="btn btn-danger">Ta bort</button></a>` +
+          '<button id="' + postID + '" type="button" data-toggle="modal" data-target="#exampleModal" class="btn edit btn-secondary">Ändra</button>' +
+          '<button id="' + postID + '" type="button" class="btn remove btn-danger">Ta bort</button>' +
           '</td></tr>';
       }
       output += '</tbody></table>';
@@ -59,6 +61,48 @@ $(document).ready(_ => {
       allCourses.html(output);
       $('table').addClass('table');
 
+      $(document).on('click', '.syllabus', (event) => {
+        console.log("Handler for syllabus");
+        console.log(event.target.id)
+      });
+
+      $(document).on('click', '.edit', (event) => {
+        console.log("Handler for edit");
+        console.log(event.target.id)
+        $('#modalLabel').append(event.target.id)
+
+        $.ajax({
+          type: 'GET',
+          url: preUrl + 'update.php',
+          dataType: 'json',
+          success: result => {
+            console.log('In here ' + result.records);
+          },
+          error: function (textStatus, errorThrown) {
+            alert('Status: ' + textStatus);
+            alert('Error: ' + errorThrown);
+          }
+        })
+
+        let modalForm =
+          '<form action="update.php" method="POST">' +
+          '<div class="form-group">' +
+          'Kursnamn<input class="form-control" type="text" name="name" /><br />' +
+          'Kurskod<input class="form-control" type="text" name="code" /><br />' +
+          'Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" /><br />' +
+          'Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />' +
+          '<input type="submit" class="btn btn-primary" id="create" value="Uppdatera kursen" />' +
+          '</div>' +
+          '</form >'
+        $('.modal-body').append(modalForm)
+      });
+
+      $(document).on('click', '.remove', (event) => {
+        console.log("Handler for remove");
+        console.log(event.target.id)
+      });
+
+      // Using library DataTable. Linking in index.html
       $('#all-courses-table').DataTable({
         pagingType: 'full',
         lengthMenu: [1, 3, 5, 8, 10, 15, 25, 50],
@@ -141,7 +185,7 @@ $(document).ready(_ => {
         $('table').addClass('table');
         console.log(output);
       },
-      error: function(textStatus, errorThrown) {
+      error: function (textStatus, errorThrown) {
         alert('Status: ' + textStatus);
         alert('Error: ' + errorThrown);
       }
