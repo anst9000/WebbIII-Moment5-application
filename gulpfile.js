@@ -1,49 +1,34 @@
 const { src, dest, watch, series, parallel } = require('gulp')
 const concat = require('gulp-concat')
-const terser = require('gulp-terser');
+const uglify = require('gulp-uglify-es').default
 const sass = require('gulp-sass')
 const cleanCSS = require('gulp-clean-css')
 const imagemin = require('gulp-imagemin')
 const newer = require('gulp-newer');
-const del = require('del')
-const babel = require('gulp-babel')
-const sourcemaps = require('gulp-sourcemaps')
 const browserSync = require('browser-sync').create()
 
 const files = {
   htmlPath: 'src/**/*.html',
   scssPath: 'src/scss/**/*.scss',
   jsPath: 'src/js/**/*.js',
-  resPath: './src/res/**/*',
-  imgPath: ['src/img/**/*.{gif,png,jpg,jpeg,ico}'],
-  imgPubPath: 'pub/img'
+  imgPath: "src/img/*",
+  resPath: '/src/res/**/*'
 }
 
-const imgTask = series(imgClean, imgMinify)
-
-// Clean images
-function imgClean() {
-  return del(files.imgPubPath);
-}
-
-// Minifying images by imagemin
-function imgMinify() {
-  // return src('src/img/*')
+// Task copy images
+function imgTask() {
   return src(files.imgPath)
-    .pipe(imagemin([
-      imagemin.gifsicle({ interlaced: true }),
-      imagemin.jpegtran({ progressive: true }),
-      imagemin.optipng({ optimizationLevel: 5 }),
-      imagemin.svgo({
-        plugins: [
-          { removeViewBox: true },
-          { cleanupIDs: false }
-        ]
-      })
-    ], {
-      verbose: true
-    }))
-    .pipe(dest(files.imgPubPath))  // place images in img-folder
+    // Minifying images
+    .pipe(imagemin())
+    .pipe(dest("pub/img"))
+    .pipe(browserSync.stream())
+}
+
+// Task copy resources
+function resTask() {
+  return src('./src/res/**/*')
+    .pipe(newer('./pub/res'))
+    .pipe(dest('./pub/res'));
 }
 
 // Task: copy HTML
@@ -57,10 +42,7 @@ function htmlTask() {
 function jsTask() {
   return src(files.jsPath)
     .pipe(concat('main.js'))
-    .pipe(babel({
-      presets: ['@babel/env']
-    }))
-    .pipe(terser())
+    .pipe(uglify())
     .pipe(dest('pub/js'))
     .pipe(browserSync.stream())
 }
@@ -68,20 +50,12 @@ function jsTask() {
 // Task: Convert scss to css
 function scssTask() {
   return src(files.scssPath)
-    .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(cleanCSS())
-    .pipe(sourcemaps.write('./maps'))
     .pipe(dest('pub/css'))
-    .pipe(browserSync.stream())     // Make sure changes shows in browsers
+    // Make sure changes shows in browsers
+    .pipe(browserSync.stream())
 }
-
-function resCopy() {
-  return src('./src/res/**/*')
-    .pipe(newer('./pub/res'))
-    .pipe(dest('./pub/res'));
-}
-
 
 // Task: Watcher
 function watchTask() {
@@ -90,20 +64,10 @@ function watchTask() {
       baseDir: 'pub/'
     }
   })
-
   watch(
-    [files.htmlPath, files.jsPath, files.scssPath],
-    parallel(htmlTask, jsTask, scssTask)
-  ).on('change', browserSync.reload)
-  watch(files.imgPath, imgTask).on('change', browserSync.reload)
-  watch(files.resPath, resCopy).on('change', browserSync.reload)
+    [files.htmlPath, files.jsPath, files.scssPath, files.imgPath, files.resPath],
+    parallel(htmlTask, jsTask, scssTask, imgTask, resTask)
+  )
 }
 
-exports.default = series(
-  jsTask,
-  scssTask,
-  htmlTask,
-  resCopy,
-  imgTask,
-  watchTask
-)
+exports.default = series(parallel(htmlTask, jsTask, scssTask, imgTask, resTask), watchTask)

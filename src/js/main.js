@@ -10,6 +10,23 @@
 
 const preUrl = 'http://studenter.miun.se/~anst9000/writeable/dt173g/api/course/';
 
+function submitUpdateForm() {
+  console.log('submitting')
+
+  // document.forms['update'].submit()
+  $('#updateModal').modal('toggle');
+}
+
+function submitDeleteForm() {
+  console.log('submitting')
+
+  // document.forms['update'].submit()
+  $('#deleteModal').modal('toggle');
+}
+
+
+
+
 $(document).ready(_ => {
   console.log('started');
   $('#dtBasicExample').DataTable();
@@ -96,12 +113,17 @@ $(document).ready(_ => {
         $('#updateModalLabel').append('Uppdatera information för ' + '<br />').append(entry.name)
         // Fill Modal
         modalForm =
-          '<form action="update.php" method="POST">' +
+          '<form name="update">' +
           '<div class="form-group">' +
           'Kursnamn<input class="form-control" type="text" name="name" value="' + entry.name + '" /><br />' +
           'Kurskod<input class="form-control" type="text" name="code" value="' + entry.code + '" /><br />' +
           'Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" value="' + entry.progression + '" /><br />' +
           'Länk till kursplan<input class="form-control" type="text" name="syllabus" value="' + entry.syllabus + '" /><br />' +
+          '</div>' +
+
+          '<div class="modal-footer">' +
+          '<button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>' +
+          '<input type="button" class="btn btn-primary" id="updateButton" value="Spara" onClick="submitUpdateForm()" />' +
           '</div>' +
           '</form >'
         $('.modal-body').append(modalForm)

@@ -78,19 +78,6 @@
 
   <div class="create-list" id="create-course"></div>
 
-  <!-- Update course -->
-  <div class="update-form1" id="update-course">
-    <form action="update.php" method="POST">
-      <input type="text" name="id" /><br />
-      <input type="text" name="name" /><br />
-      <input type="text" name="code" /><br />
-      <input type="text" name="progression" /><br />
-      <input type="text" name="syllabus" /><br />
-      <input type="text" class="btn btn-primary" id="update" value="Update Course" />
-    </form>
-  </div>
-  <!-- END Update course -->
-
   <!-- Modal -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
     aria-hidden="true">
@@ -103,10 +90,6 @@
           </button>
         </div>
         <div class="modal-body"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
-          <button type="button" class="btn btn-primary">Spara</button>
-        </div>
       </div>
     </div>
   </div>
@@ -125,7 +108,7 @@
         <div class="modal-body"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Ångra</button>
-          <button type="button" class="btn btn-primary">Ta bort</button>
+          <button type="button" class="btn btn-primary" onClick="submitDeleteForm()">Ta bort</button>
         </div>
       </div>
     </div>
