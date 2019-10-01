@@ -17,12 +17,14 @@ $(document).ready(_ => {
   // Show all courses taken
   let allCourses = $('#all-courses');
   let pagination = $('#pagination');
+  let ajaxResult = []
 
   $.ajax({
     type: 'GET',
     url: preUrl + 'read.php',
     dataType: 'json',
     success: result => {
+      ajaxResult.push(result.records);
       console.log(result.records.length);
       // pagination.html(result.records.length);
       let output =
@@ -67,30 +69,37 @@ $(document).ready(_ => {
       });
 
       $(document).on('click', '.edit', (event) => {
+        let entry = ''
+        let modalForm = ''
+        $('#modalLabel').empty()
+        $('.modal-body').empty()
         console.log("Handler for edit");
         console.log(event.target.id)
-        $('#modalLabel').append(event.target.id)
+        console.log(ajaxResult)
 
-        $.ajax({
-          type: 'GET',
-          url: preUrl + 'update.php',
-          dataType: 'json',
-          success: result => {
-            console.log('In here ' + result.records);
-          },
-          error: function (textStatus, errorThrown) {
-            alert('Status: ' + textStatus);
-            alert('Error: ' + errorThrown);
+        // Find the post in array and fill input fields
+        for (let index = 0; index < ajaxResult[0].length; ++index) {
+          console.log('searching')
+
+          entry = ajaxResult[0][index]
+          console.log('...very much')
+          console.log(entry)
+          if (entry.id === event.target.id) {
+            console.log('yippie I"ve found it')
+            console.log(entry.name)
+            break
           }
-        })
+        }
 
-        let modalForm =
+        $('#modalLabel').append('Uppdatera information för ' + '<br />').append(entry.name)
+        // Fill Modal
+        modalForm =
           '<form action="update.php" method="POST">' +
           '<div class="form-group">' +
-          'Kursnamn<input class="form-control" type="text" name="name" /><br />' +
-          'Kurskod<input class="form-control" type="text" name="code" /><br />' +
-          'Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" /><br />' +
-          'Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />' +
+          'Kursnamn<input class="form-control" type="text" name="name" value="' + entry.name + '" /><br />' +
+          'Kurskod<input class="form-control" type="text" name="code" value="' + entry.code + '" /><br />' +
+          'Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" value="' + entry.progression + '" /><br />' +
+          'Länk till kursplan<input class="form-control" type="text" name="syllabus" value="' + entry.syllabus + '" /><br />' +
           '<input type="submit" class="btn btn-primary" id="create" value="Uppdatera kursen" />' +
           '</div>' +
           '</form >'
@@ -192,6 +201,21 @@ $(document).ready(_ => {
     });
   });
 });
+
+// $.ajax({
+//   type: 'POST',
+//   url: preUrl + 'update.php',
+//   dataType: 'json',
+//   success: result => {
+//     console.log('In here ' + result.records);
+//   },
+//   error: function (textStatus, errorThrown) {
+//     console.log('Status: ' + textStatus);
+//     console.log('Error: ' + errorThrown);
+//   }
+// })
+
+
 
 // { message: "Course Created", id: null, name: "Kevin Smith", code: "vqxbtbhk", progression: "B", … }
 // code: "vqxbtbhk"
