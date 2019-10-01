@@ -46,16 +46,17 @@ $(document).ready(_ => {
         let postName = result.records[i].name
         let postCode = result.records[i].code
         let postProg = result.records[i].progression
+        let postLink = result.records[i].syllabus
         console.log('postID = ' + postID)
         output +=
           '<tr><td>' + postName +
           '</td><td>' + postCode +
           '</td><td>' + postProg +
           '</td><td>' +
-          '<button id="' + postID + '" type="button" class="btn syllabus btn-primary">Kursplan</button>' +
+          '<a href="' + postLink + '" id="' + postID + '" type="button" class="btn syllabus btn-primary">Kursplan</a>' +
           '</td><td>' +
-          '<button id="' + postID + '" type="button" data-toggle="modal" data-target="#exampleModal" class="btn edit btn-secondary">Ändra</button>' +
-          '<button id="' + postID + '" type="button" class="btn remove btn-danger">Ta bort</button>' +
+          '<button id="' + postID + '" type="button" data-toggle="modal" data-target="#updateModal" class="btn edit btn-secondary">Ändra</button>' +
+          '<button id="' + postID + '" type="button" data-toggle="modal" data-target="#deleteModal"  class="btn remove btn-danger">Ta bort</button>' +
           '</td></tr>';
       }
       output += '</tbody></table>';
@@ -68,10 +69,11 @@ $(document).ready(_ => {
         console.log(event.target.id)
       });
 
+      // Update an existing course
       $(document).on('click', '.edit', (event) => {
         let entry = ''
         let modalForm = ''
-        $('#modalLabel').empty()
+        $('#updateModalLabel').empty()
         $('.modal-body').empty()
         console.log("Handler for edit");
         console.log(event.target.id)
@@ -91,7 +93,7 @@ $(document).ready(_ => {
           }
         }
 
-        $('#modalLabel').append('Uppdatera information för ' + '<br />').append(entry.name)
+        $('#updateModalLabel').append('Uppdatera information för ' + '<br />').append(entry.name)
         // Fill Modal
         modalForm =
           '<form action="update.php" method="POST">' +
@@ -100,15 +102,46 @@ $(document).ready(_ => {
           'Kurskod<input class="form-control" type="text" name="code" value="' + entry.code + '" /><br />' +
           'Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" value="' + entry.progression + '" /><br />' +
           'Länk till kursplan<input class="form-control" type="text" name="syllabus" value="' + entry.syllabus + '" /><br />' +
-          '<input type="submit" class="btn btn-primary" id="create" value="Uppdatera kursen" />' +
           '</div>' +
           '</form >'
         $('.modal-body').append(modalForm)
       });
 
+      // Delete a course
       $(document).on('click', '.remove', (event) => {
-        console.log("Handler for remove");
+        let entry = ''
+        let modalForm = ''
+        $('#updateModalLabel').empty()
+        $('.modal-body').empty()
+        console.log("Handler for edit");
         console.log(event.target.id)
+        console.log(ajaxResult)
+
+        // Find the post in array and fill input fields
+        for (let index = 0; index < ajaxResult[0].length; ++index) {
+          console.log('searching')
+
+          entry = ajaxResult[0][index]
+          console.log('...very much')
+          console.log(entry)
+          if (entry.id === event.target.id) {
+            console.log('yippie I"ve found it')
+            console.log(entry.name)
+            break
+          }
+        }
+
+        $('#deleteModalLabel').append(entry.name)
+        // Fill Modal
+        modalForm =
+          '<form action="update.php" method="POST">' +
+          '<div class="form-group">' +
+          '<p>Om du vill ta bort kursen</p>' +
+          '<p><span id="courseSpan">' + entry.code + ' ' + entry.name + '</span></p>' +
+          '<p>, så klickar du på knappen <span id="removeSpan">Ta bort</span></p>' +
+          '</div>' +
+          '</form >'
+        $('.modal-body').append(modalForm)
       });
 
       // Using library DataTable. Linking in index.html

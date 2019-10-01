@@ -13,6 +13,8 @@ body {
 .btn {
   margin: 0 0.5rem;
   padding: 0 0.2rem;
+  width: 90px;
+  height: 30px;
 }
 
 .navbar {
@@ -101,3 +103,17 @@ body {
 .update-form {
   display: none;
 }
+
+.form-group {
+  #courseSpan {
+    padding: 50px auto;
+    font-weight: bold;
+  }
+
+  #removeSpan {
+    padding: 50px auto;
+    font-weight: bold;
+  }
+
+}
+

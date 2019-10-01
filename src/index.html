@@ -45,7 +45,7 @@
             Kurskod<input class="form-control" type="text" name="code" /><br />
             Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" /><br />
             Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />
-            <input type="submit" class="btn btn-primary" id="create" value="Create Course" />
+            <input type="submit" class="btn btn-primary" id="create" value="Spara" />
           </div>
         </form>
       </div>
@@ -91,19 +91,13 @@
   </div>
   <!-- END Update course -->
 
-
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-  </button>
-
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalLabel"></h5>
+          <h5 class="modal-title" id="updateModalLabel"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -111,7 +105,27 @@
         <div class="modal-body"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
-          <button type="button" class="btn btn-primary">Spara ändringar</button>
+          <button type="button" class="btn btn-primary">Spara</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Ångra</button>
+          <button type="button" class="btn btn-primary">Ta bort</button>
         </div>
       </div>
     </div>
