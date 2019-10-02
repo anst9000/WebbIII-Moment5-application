@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Mina kurser</title>
+  <link rel="shortcut icon" type="image/png" href="res/favicon.png" />
   <script src="https://kit.fontawesome.com/6ad2b68ccb.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -14,14 +15,15 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
+
 <body>
   <!-- Image and text -->
   <nav class="navbar justify-content-center">
-    <a class="navbar-brand" href="javascript:void(0)">
+    <div class="navbar-brand">
       <img src="img/winnie_the_pooh.jpg" width="30" height="30" class="d-inline-block align-top"
         alt="winnie_the_pooh" />
       Anders Strömberg
-    </a>
+    </div>
   </nav>
 
   <!-- CONTAINER -->
@@ -41,10 +43,10 @@
         <h1>Lägg till kurs</h1>
         <form action="create.php" method="POST">
           <div class="form-group">
-            Kursnamn<input class="form-control" type="text" name="name" /><br />
-            Kurskod<input class="form-control" type="text" name="code" /><br />
-            Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" /><br />
-            Länk till kursplan<input class="form-control" type="text" name="syllabus" /><br />
+            Kursnamn<input class="form-control" type="text" name="name" id="createname" /><br />
+            Kurskod<input class="form-control" type="text" name="code" id="createcode" /><br />
+            Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" id="createprogression" /><br />
+            Länk till kursplan<input class="form-control" type="text" name="syllabus" id="createsyllabus" /><br />
             <input type="submit" class="btn btn-primary" id="create" value="Spara" />
           </div>
         </form>
@@ -111,6 +113,21 @@
           <button type="button" class="btn btn-primary" onClick="submitDeleteForm()">Ta bort</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Pop-Up Modal when update or delete course -->
+  <!--Creates the popup body-->
+  <div class="modal popup-overlay">
+    <!--Creates the popup content-->
+    <div class="popup-content">
+      <h2 id="popupHeader"></h2>
+      <p id="popupCourse"></p>
+      <p id="popupInfo"></p>
+      <!--popup's close button-->
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
   </div>
 

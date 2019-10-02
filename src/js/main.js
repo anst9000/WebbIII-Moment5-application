@@ -11,24 +11,78 @@
 const preUrl = 'http://studenter.miun.se/~anst9000/writeable/dt173g/api/course/';
 
 function submitUpdateForm() {
-  console.log('submitting')
+  let id = $('#updateid').val()
+  let name = $('#updatename').val()
+  let code = $('#updatecode').val()
+  let progression = $('#updateprogression').val()
+  let syllabus = $('#updatesyllabus').val()
 
-  // document.forms['update'].submit()
-  $('#updateModal').modal('toggle');
+  let info = {
+    'id': id,
+    'name': name,
+    'code': code,
+    'progression': progression,
+    'syllabus': syllabus
+  }
+  let data = JSON.stringify(info)
+
+  $.ajax({
+    type: 'PUT',
+    url: preUrl + 'update.php',
+    dataType: 'json',
+    data: data,
+    success: result => {
+      $('#updateModal').modal('toggle');
+
+      $(".popup-overlay, .popup-content").modal("toggle");
+      $("#popupHeader").text("Det gick bra!");
+      $("#popupCourse").html("<span>" + name + "</span>")
+      $("#popupInfo").text("Kursen är nu uppdaterad.");
+
+      window.setTimeout(() => {
+        // removes the modal after 2 sec
+        $(window).scrollTop(0);
+        $(".popup-overlay, .popup-content").modal("toggle");
+        location.reload()
+      }, 3000)
+    }
+  })
 }
 
 function submitDeleteForm() {
-  console.log('submitting')
+  let id = $('#deleteid').val()
+  let name = $('#deletename').val()
+  let info = { 'id': id }
+  let data = JSON.stringify(info)
 
-  // document.forms['update'].submit()
-  $('#deleteModal').modal('toggle');
+  $.ajax({
+    type: 'DELETE',
+    url: preUrl + 'delete.php',
+    dataType: 'json',
+    data: data,
+    success: result => {
+      $('#deleteModal').modal('toggle');
+
+      $(".popup-overlay, .popup-content").modal("toggle");
+      $("#popupHeader").text("Det lyckades.");
+      $("#popupCourse").html("<span>" + name + "</span>")
+      $("#popupInfo").text("Kursen är nu borttagen.");
+
+      window.setTimeout(() => {
+        // removes the "active" class to .popup and .popup-content after 2 sec
+        $(window).scrollTop(0);
+        $(".popup-overlay, .popup-content").modal("toggle");
+        location.reload()
+      }, 3000)
+    },
+    error: function (textStatus, errorThrown) {
+      alert('Status: ' + textStatus);
+      alert('Error: ' + errorThrown);
+    }
+  })
 }
 
-
-
-
 $(document).ready(_ => {
-  console.log('started');
   $('#dtBasicExample').DataTable();
 
   // Show all courses taken
@@ -42,49 +96,45 @@ $(document).ready(_ => {
     dataType: 'json',
     success: result => {
       ajaxResult.push(result.records);
-      console.log(result.records.length);
-      // pagination.html(result.records.length);
-      let output =
-        '<table id="all-courses-table" class="table cell-border compact stripe" cellspacing="0" width="100%">' +
-        '<thead id="all-courses-table-head">' +
-        '<tr>' +
-        '<th class="th-sm">Kursnamn</th>' +
-        '<th class="th-sm">Kurskod</th>' +
-        '<th class="th-sm">Nivå</th>' +
-        '<th class="th-sm">Kursplan</th>' +
-        '<th class="th-sm">Ändra/Ta bort</th>' +
-        '</tr>' +
-        '</thead>' +
-        '<tbody id="all-courses-table-body">';
+
+      let output = `
+        <table id="all-courses-table" class="table cell-border compact stripe" cellspacing="0" width="100%">
+          <thead id="all-courses-table-head">
+            <tr>
+              <th class="th-sm">Kursnamn</th>
+              <th class="th-sm">Kurskod</th>
+              <th class="th-sm">Nivå</th>
+              <th class="th-sm">Kursplan</th>
+              <th class="th-sm">Ändra/Ta bort</th>
+            </tr>
+          </thead>
+        <tbody id="all-courses-table-body">`;
 
       for (let i in result.records) {
-        console.log(result.records[i]);
         let postID = result.records[i].id
         let postName = result.records[i].name
         let postCode = result.records[i].code
         let postProg = result.records[i].progression
         let postLink = result.records[i].syllabus
-        console.log('postID = ' + postID)
-        output +=
-          '<tr><td>' + postName +
-          '</td><td>' + postCode +
-          '</td><td>' + postProg +
-          '</td><td>' +
-          '<a href="' + postLink + '" id="' + postID + '" type="button" class="btn syllabus btn-primary">Kursplan</a>' +
-          '</td><td>' +
-          '<button id="' + postID + '" type="button" data-toggle="modal" data-target="#updateModal" class="btn edit btn-secondary">Ändra</button>' +
-          '<button id="' + postID + '" type="button" data-toggle="modal" data-target="#deleteModal"  class="btn remove btn-danger">Ta bort</button>' +
-          '</td></tr>';
+
+        output += `
+          <tr>
+          <td>${postName}</td>
+          <td>${postCode}</td>
+          <td>${postProg}</td>
+          <td>
+          <input type="button" class="btn syllabus btn-primary" id="${postID}" value="Kursplan" onclick="window.location.href='${postLink}'" />
+          </td>
+          <td>
+          <button id="${postID}" type="button" data-toggle="modal" data-target="#updateModal" class="btn edit btn-secondary">Ändra</button>
+          <button id="${postID}" type="button" data-toggle="modal" data-target="#deleteModal" class="btn remove btn-danger">Ta bort</button>
+          </td>
+          </tr>`
       }
       output += '</tbody></table>';
 
       allCourses.html(output);
       $('table').addClass('table');
-
-      $(document).on('click', '.syllabus', (event) => {
-        console.log("Handler for syllabus");
-        console.log(event.target.id)
-      });
 
       // Update an existing course
       $(document).on('click', '.edit', (event) => {
@@ -92,20 +142,11 @@ $(document).ready(_ => {
         let modalForm = ''
         $('#updateModalLabel').empty()
         $('.modal-body').empty()
-        console.log("Handler for edit");
-        console.log(event.target.id)
-        console.log(ajaxResult)
 
         // Find the post in array and fill input fields
         for (let index = 0; index < ajaxResult[0].length; ++index) {
-          console.log('searching')
-
           entry = ajaxResult[0][index]
-          console.log('...very much')
-          console.log(entry)
           if (entry.id === event.target.id) {
-            console.log('yippie I"ve found it')
-            console.log(entry.name)
             break
           }
         }
@@ -115,10 +156,11 @@ $(document).ready(_ => {
         modalForm =
           '<form name="update">' +
           '<div class="form-group">' +
-          'Kursnamn<input class="form-control" type="text" name="name" value="' + entry.name + '" /><br />' +
-          'Kurskod<input class="form-control" type="text" name="code" value="' + entry.code + '" /><br />' +
-          'Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" value="' + entry.progression + '" /><br />' +
-          'Länk till kursplan<input class="form-control" type="text" name="syllabus" value="' + entry.syllabus + '" /><br />' +
+          '<input class="form-control" id="updateid" type="hidden" name="id" value="' + entry.id + '" /><br />' +
+          'Kursnamn<input class="form-control" id="updatename" type="text" name="name" value="' + entry.name + '" /><br />' +
+          'Kurskod<input class="form-control" id="updatecode" type="text" name="code" value="' + entry.code + '" /><br />' +
+          'Nivå (A, B, C, D, E)<input class="form-control" id="updateprogression" type="text" name="progression" value="' + entry.progression + '" /><br />' +
+          'Länk till kursplan<input class="form-control" id="updatesyllabus" type="text" name="syllabus" value="' + entry.syllabus + '" /><br />' +
           '</div>' +
 
           '<div class="modal-footer">' +
@@ -135,20 +177,11 @@ $(document).ready(_ => {
         let modalForm = ''
         $('#updateModalLabel').empty()
         $('.modal-body').empty()
-        console.log("Handler for edit");
-        console.log(event.target.id)
-        console.log(ajaxResult)
 
         // Find the post in array and fill input fields
         for (let index = 0; index < ajaxResult[0].length; ++index) {
-          console.log('searching')
-
           entry = ajaxResult[0][index]
-          console.log('...very much')
-          console.log(entry)
           if (entry.id === event.target.id) {
-            console.log('yippie I"ve found it')
-            console.log(entry.name)
             break
           }
         }
@@ -156,8 +189,10 @@ $(document).ready(_ => {
         $('#deleteModalLabel').append(entry.name)
         // Fill Modal
         modalForm =
-          '<form action="update.php" method="POST">' +
+          '<form action="update.php" method="DELETE">' +
           '<div class="form-group">' +
+          '<input class="form-control" id="deleteid" type="hidden" name="id" value="' + entry.id + '" /><br />' +
+          '<input class="form-control" id="deletename" type="hidden" name="name" value="' + entry.name + '" /><br />' +
           '<p>Om du vill ta bort kursen</p>' +
           '<p><span id="courseSpan">' + entry.code + ' ' + entry.name + '</span></p>' +
           '<p>, så klickar du på knappen <span id="removeSpan">Ta bort</span></p>' +
@@ -169,7 +204,7 @@ $(document).ready(_ => {
       // Using library DataTable. Linking in index.html
       $('#all-courses-table').DataTable({
         pagingType: 'full',
-        lengthMenu: [1, 3, 5, 8, 10, 15, 25, 50],
+        lengthMenu: [5, 10, 15, 20],
         language: {
           lengthMenu: 'Visa _MENU_ kurser per sida',
           zeroRecords: 'Ingen träff - tyvärr',
@@ -210,11 +245,21 @@ $(document).ready(_ => {
 
   $('#create').click(event => {
     event.preventDefault();
-
     console.log('Show create courses');
     let createCourse = $('#create-course');
-    let data = $('form').serializeArray();
-    console.log(data);
+    let name = $('#createname').val()
+    let code = $('#createcode').val()
+    let progression = $('#createprogression').val()
+    let syllabus = $('#createsyllabus').val()
+
+
+    let info = {
+      'name': name,
+      'code': code,
+      'progression': progression,
+      'syllabus': syllabus
+    }
+    let data = JSON.stringify(info)
 
     $.ajax({
       type: 'POST',
@@ -222,32 +267,18 @@ $(document).ready(_ => {
       data: data,
       dataType: 'json',
       success: result => {
-        let output =
-          '<table id="create-course-table">' +
-          '<thead id="create-course-table-head">' +
-          '<tr><th>Kurskod</th>' +
-          '<th>Kursnamn</th>' +
-          '<th>Progression</th>' +
-          '<th>Kursplan</th>' +
-          '</thead>' +
-          '<tbody id="create-course-table-body">';
+        $(window).scrollTop(0);
+        $(".popup-overlay, .popup-content").modal("toggle");
+        $("#popupHeader").text("Det är klart!");
+        $("#popupCourse").html("<span>" + name + "</span>")
+        $("#popupInfo").text("Kursen är tillagd.");
 
-        console.log(result);
-        output +=
-          '<tr><td>' +
-          result.name +
-          '</td><td>' +
-          result.code +
-          '</td><td>' +
-          result.progression +
-          '</td><td>' +
-          `<a href="${result.syllabus}" target="_blank"><button>Kursplan</button></a>` +
-          '</td></tr>';
-        output += '</tbody></table>';
-
-        createCourse.html(output);
-        $('table').addClass('table');
-        console.log(output);
+        window.setTimeout(() => {
+          // removes the "active" class to .popup and .popup-content after 2 sec
+          $(window).scrollTop(0);
+          $(".popup-overlay, .popup-content").modal("toggle");
+          location.reload()
+        }, 3000)
       },
       error: function (textStatus, errorThrown) {
         alert('Status: ' + textStatus);
@@ -256,27 +287,3 @@ $(document).ready(_ => {
     });
   });
 });
-
-// $.ajax({
-//   type: 'POST',
-//   url: preUrl + 'update.php',
-//   dataType: 'json',
-//   success: result => {
-//     console.log('In here ' + result.records);
-//   },
-//   error: function (textStatus, errorThrown) {
-//     console.log('Status: ' + textStatus);
-//     console.log('Error: ' + errorThrown);
-//   }
-// })
-
-
-
-// { message: "Course Created", id: null, name: "Kevin Smith", code: "vqxbtbhk", progression: "B", … }
-// code: "vqxbtbhk"
-// id: null
-// message: "Course Created"
-// name: "Kevin Smith"
-// progression: "B"
-// syllabus: "https://www.miun.se/utbildning/kurser/Sok-kursplan/kursplan/?kursplanid=21486"
-// __proto__: Object
