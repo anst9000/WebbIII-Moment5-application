@@ -119,16 +119,16 @@ $(document).ready(_ => {
 
         output += `
           <tr>
-          <td>${postName}</td>
-          <td>${postCode}</td>
-          <td>${postProg}</td>
-          <td>
-          <input type="button" class="btn syllabus btn-primary" id="${postID}" value="Kursplan" onclick="window.location.href='${postLink}'" />
-          </td>
-          <td>
-          <button id="${postID}" type="button" data-toggle="modal" data-target="#updateModal" class="btn edit btn-secondary">Ändra</button>
-          <button id="${postID}" type="button" data-toggle="modal" data-target="#deleteModal" class="btn remove btn-danger">Ta bort</button>
-          </td>
+            <td>${postName}</td>
+            <td>${postCode}</td>
+            <td>${postProg}</td>
+            <td>
+              <input type="button" class="btn syllabus btn-primary" id="${postID}" value="Kursplan" onclick="window.location.href='${postLink}'" />
+            </td>
+            <td>
+              <button id="${postID}" type="button" data-toggle="modal" data-target="#updateModal" class="btn edit btn-secondary">Ändra</button>
+              <button id="${postID}" type="button" data-toggle="modal" data-target="#deleteModal" class="btn remove btn-danger">Ta bort</button>
+            </td>
           </tr>`
       }
       output += '</tbody></table>';
@@ -151,23 +151,23 @@ $(document).ready(_ => {
           }
         }
 
-        $('#updateModalLabel').append('Uppdatera information för ' + '<br />').append(entry.name)
+        $('#updateModalLabel').append('Uppdatera kursen ' + '<br />').append(entry.name)
         // Fill Modal
-        modalForm =
-          '<form name="update">' +
-          '<div class="form-group">' +
-          '<input class="form-control" id="updateid" type="hidden" name="id" value="' + entry.id + '" /><br />' +
-          'Kursnamn<input class="form-control" id="updatename" type="text" name="name" value="' + entry.name + '" /><br />' +
-          'Kurskod<input class="form-control" id="updatecode" type="text" name="code" value="' + entry.code + '" /><br />' +
-          'Nivå (A, B, C, D, E)<input class="form-control" id="updateprogression" type="text" name="progression" value="' + entry.progression + '" /><br />' +
-          'Länk till kursplan<input class="form-control" id="updatesyllabus" type="text" name="syllabus" value="' + entry.syllabus + '" /><br />' +
-          '</div>' +
+        modalForm = `
+          <form name="update">
+            <div class="form-group">
+              <input class="form-control" id="updateid" type="hidden" name="id" value="${entry.id}" />
+              Kursnamn<input class="form-control" id="updatename" type="text" name="name" value="${entry.name}" />
+              Kurskod<input class="form-control" id="updatecode" type="text" name="code" value="${entry.code}" />
+              Nivå (A, B, C, D, E)<input class="form-control" id="updateprogression" type="text" name="progression" value="${entry.progression}" />
+              Länk till kursplan<input class="form-control" id="updatesyllabus" type="text" name="syllabus" value="${entry.syllabus}" />
+            </div>
 
-          '<div class="modal-footer">' +
-          '<button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>' +
-          '<input type="button" class="btn btn-primary" id="updateButton" value="Spara" onClick="submitUpdateForm()" />' +
-          '</div>' +
-          '</form >'
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+              <input type="button" class="btn btn-primary" id="updateButton" value="Spara" onClick="submitUpdateForm()" />
+            </div>
+          </form>`
         $('.modal-body').append(modalForm)
       });
 
@@ -175,7 +175,7 @@ $(document).ready(_ => {
       $(document).on('click', '.remove', (event) => {
         let entry = ''
         let modalForm = ''
-        $('#updateModalLabel').empty()
+        $('#deleteModalLabel').empty()
         $('.modal-body').empty()
 
         // Find the post in array and fill input fields
@@ -186,18 +186,18 @@ $(document).ready(_ => {
           }
         }
 
-        $('#deleteModalLabel').append(entry.name)
+        $('#deleteModalLabel').append('Ta bort kursen ' + '<br />').append(entry.name)
         // Fill Modal
-        modalForm =
-          '<form action="update.php" method="DELETE">' +
-          '<div class="form-group">' +
-          '<input class="form-control" id="deleteid" type="hidden" name="id" value="' + entry.id + '" /><br />' +
-          '<input class="form-control" id="deletename" type="hidden" name="name" value="' + entry.name + '" /><br />' +
-          '<p>Om du vill ta bort kursen</p>' +
-          '<p><span id="courseSpan">' + entry.code + ' ' + entry.name + '</span></p>' +
-          '<p>, så klickar du på knappen <span id="removeSpan">Ta bort</span></p>' +
-          '</div>' +
-          '</form >'
+        modalForm = `
+          <form action="update.php" method="DELETE">
+            <div class="form-group">
+              <input class="form-control" id="deleteid" type="hidden" name="id" value="${entry.id}" />
+              <input class="form-control" id="deletename" type="hidden" name="name" value="${entry.name}" />
+              <p>Om du vill ta bort kursen</p>
+              <p><span id="courseSpan">${entry.code} ${entry.name}</span></p>
+              <p>, så klickar du på knappen <span id="removeSpan">Ta bort</span></p>
+            </div>
+          </form>`
         $('.modal-body').append(modalForm)
       });
 
@@ -223,25 +223,6 @@ $(document).ready(_ => {
     }
   });
 
-  // Create eventlisteners for buttons
-  $('#single').click(event => {
-    event.preventDefault();
-    console.log('Show single courses');
-    let formData = $('form').serializeArray();
-    console.log(formData);
-  });
-  $('#update').click(event => {
-    event.preventDefault();
-    console.log('Show update courses');
-    let formData = $('form').serializeArray();
-    console.log(formData);
-  });
-  $('#delete').click(event => {
-    event.preventDefault();
-    console.log('Show delete courses');
-    let formData = $('form').serializeArray();
-    console.log(formData);
-  });
 
   $('#create').click(event => {
     event.preventDefault();
