@@ -62,7 +62,7 @@
             Här finns en översikt av de kurser jag har läst under mina snart 2,5 år på
             Mittuniversitets utbildning Datateknik, 180hp. De kurser som jag har läst finns
             lagrade i en MySQL-databas som ligger på Miun:s server. Jag har skrivit en REST API i
-            PHP som också ligger på skolans server. Sen har jag gjort den här applikationen som
+            PHP som också ligger på skolans server. Till det här projektet har jag också gjort den här applikationen som
             jobbar mot API:t.
           </p>
         </div>
@@ -117,39 +117,66 @@
     </div>
   </div>
 
-  <!-- Pop-Up Modal when update or delete course -->
-  <!--Creates the popup body-->
-  <div class="modal popup-overlay">
-    <!--Creates the popup content-->
-    <div class="popup-content">
-      <h2 id="popupHeader"></h2>
-      <p id="popupCourse"></p>
-      <p id="popupInfo"></p>
-      <!--popup's close button-->
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <!-- Pop-Up Modal when create, update or delete course -->
+  <div class="modal fade" id="createInfoModal" tabindex="-1" role="dialog" aria-labelledby="createInfoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createInfoModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateInfoModal" tabindex="-1" role="dialog" aria-labelledby="updateInfoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateInfoModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteInfoModal" tabindex="-1" role="dialog" aria-labelledby="deleteInfoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteInfoModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <section id="footer" class="py-4 bg-dark text-white-50">
-    <div class="container">
-      <div class="row text-center text-xs-center text-sm-left text-md-left">
-        <div class="col-xs-12 col-sm-4 col-md-4">
-          <p><span>Anders Strömberg</span></p>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-          <p>
-            <span><i class="fas fa-phone"></i></span> 070 - 648 48 48
-          </p>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-          <p>
-            <span><i class="fas fa-envelope-square"></i></span> coltlaboy@yahoo.se
-          </p>
-        </div>
-      </div>
+  <section id="footer" class="py-4">
+    <div class="name">
+      <p><span>Anders Strömberg</span></p>
+    </div>
+    <div class="phone">
+      <p>
+        <span><i class="fas fa-phone"></i></span> 070 - 648 48 48
+      </p>
+    </div>
+    <div class="email">
+      <p>
+        <span><i class="fas fa-envelope-square"></i></span> anst9000@student.miun.se
+      </p>
     </div>
   </section>
   <!-- ./Footer -->

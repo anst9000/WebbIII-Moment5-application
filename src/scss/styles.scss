@@ -1,8 +1,7 @@
 @import 'reset';
 @import 'fonts';
 @import 'colors';
-
-$color: firebrick;
+@import 'mixins';
 
 body {
   color: black;
@@ -11,8 +10,8 @@ body {
 }
 
 .btn {
-  margin: 0 0.5rem;
-  padding: 0 0.2rem;
+  margin: 0.1rem 0.5rem;
+  padding: 0.1rem 0.2rem;
   width: 90px;
   height: 30px;
 }
@@ -26,6 +25,11 @@ body {
   color: #000;
   font-size: 4rem;
 
+  @include for-up-to-desktop {
+    font-size: 3.5rem;
+  }
+
+
   img {
     width: 75px;
     height: 75px;
@@ -33,7 +37,7 @@ body {
 }
 
 .container {
-  max-width: 80%;
+  max-width: 90%;
   h1 {
     font-size: 1.5rem;
     margin: 0.5rem 0 1rem;
@@ -44,6 +48,15 @@ body {
   margin: 3.5rem 0 1rem;
   padding: 0.7rem 1.8rem;
   background-color: $colorArea;
+
+    @include for-up-to-desktop {
+      margin: 2.5rem 0 1rem;
+      padding: 0.6rem 1.3rem;
+    }
+}
+
+table th {
+    width: auto !important;
 }
 
 .mid-section {
@@ -124,22 +137,32 @@ body {
 }
 
 // Pop-up modal when deleting or updating course
-.popup-overlay {
-  background: #fff;
-  width: 500px;
-  height: 250px;
-  position: absolute;
-  float: left;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+#createInfoModal,
+#updateInfoModal,
+#deleteInfoModal {
 
-  .popup-content h2 {
+  .modal-header {
+    background: $colorNavbar;
+    height: 110px;
+  }
+
+  .modal-content {
+    border: 2px solid #333;
+
+    .close {
+      font-size: 2rem;
+    }
+  }
+
+  #createInfoModalLabel,
+  #updateInfoModalLabel,
+  #deleteInfoModalLabel {
     margin: 2rem auto;
     text-align: center;
     font-size: 2rem;
   }
-  .popup-content p {
+
+  .modal-body p {
     margin: 0 1.2rem 0;
     text-align: center;
     font-size: 1.2rem;
@@ -150,14 +173,52 @@ body {
     }
 
     span {
+      // text-align: center;
       font-weight: bold;
       letter-spacing: 1px;
     }
   }
+}
 
-  .close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
+#footer {
+  width: 100%;
+  background-color: darken($colorNavbar, 15%);
+  display: grid;
+  grid-template-areas:
+    'name phone email';
+  grid-gap: 10px;
+  padding: 0.7rem 1.8rem;
+
+  @include for-phone-only {
+    grid-template-areas:
+    'name name'
+    'phone email';
+  }
+
+  .name, .phone, .email {
+    display: flex;
+    height: 100%;
+    color: $colorTextFooter;
+    background: $colorNavbar;
+
+    font-weight: 500;
+    letter-spacing: 1px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    padding: 1rem 0.4rem 0 0.4rem;
   }
 }
+
+.name {
+  grid-area: name;
+}
+
+.phone {
+  grid-area: phone;
+}
+
+.email {
+  grid-area: email;
+}
+

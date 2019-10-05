@@ -32,19 +32,19 @@ function submitUpdateForm() {
     dataType: 'json',
     data: data,
     success: result => {
-      $('#updateModal').modal('toggle');
+      $("#updateModal").modal('toggle');
+      $('.modal-body').html("")
 
-      $(".popup-overlay, .popup-content").modal("toggle");
-      $("#popupHeader").text("Det gick bra!");
-      $("#popupCourse").html("<span>" + name + "</span>")
-      $("#popupInfo").text("Kursen är nu uppdaterad.");
+      $("#updateInfoModal").modal("toggle");
+      $('#updateInfoModalLabel').text("Det gick bra!");
+      $("#updateInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu uppdaterad</p>")
 
       window.setTimeout(() => {
         // removes the modal after 2 sec
         $(window).scrollTop(0);
-        $(".popup-overlay, .popup-content").modal("toggle");
+        $("#updateInfoModal").modal("toggle");
         location.reload()
-      }, 3000)
+      }, 2500)
     }
   })
 }
@@ -62,18 +62,18 @@ function submitDeleteForm() {
     data: data,
     success: result => {
       $('#deleteModal').modal('toggle');
+      $('.modal-body').html("")
 
-      $(".popup-overlay, .popup-content").modal("toggle");
-      $("#popupHeader").text("Det lyckades.");
-      $("#popupCourse").html("<span>" + name + "</span>")
-      $("#popupInfo").text("Kursen är nu borttagen.");
+      $("#deleteInfoModal").modal("toggle");
+      $('#deleteInfoModalLabel').text("Det lyckades.")
+      $("#deleteInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu borttagen</p>")
 
       window.setTimeout(() => {
         // removes the "active" class to .popup and .popup-content after 2 sec
         $(window).scrollTop(0);
-        $(".popup-overlay, .popup-content").modal("toggle");
+        $("#deleteInfoModal").modal("toggle");
         location.reload()
-      }, 3000)
+      }, 2500)
     },
     error: function (textStatus, errorThrown) {
       alert('Status: ' + textStatus);
@@ -98,6 +98,7 @@ $(document).ready(_ => {
       ajaxResult.push(result.records);
 
       let output = `
+      <div class="table-responsive">
         <table id="all-courses-table" class="table cell-border compact stripe" cellspacing="0" width="100%">
           <thead id="all-courses-table-head">
             <tr>
@@ -131,7 +132,7 @@ $(document).ready(_ => {
             </td>
           </tr>`
       }
-      output += '</tbody></table>';
+      output += '</tbody></table></div>';
 
       allCourses.html(output);
       $('table').addClass('table');
@@ -233,7 +234,6 @@ $(document).ready(_ => {
     let progression = $('#createprogression').val()
     let syllabus = $('#createsyllabus').val()
 
-
     let info = {
       'name': name,
       'code': code,
@@ -249,17 +249,18 @@ $(document).ready(_ => {
       dataType: 'json',
       success: result => {
         $(window).scrollTop(0);
-        $(".popup-overlay, .popup-content").modal("toggle");
-        $("#popupHeader").text("Det är klart!");
-        $("#popupCourse").html("<span>" + name + "</span>")
-        $("#popupInfo").text("Kursen är tillagd.");
+        $('.modal-body').html("")
+
+        $("#createInfoModal").modal("toggle");
+        $('#createInfoModalLabel').text("Det är klart!")
+        $("#createInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är tillagd.</p>")
 
         window.setTimeout(() => {
           // removes the "active" class to .popup and .popup-content after 2 sec
           $(window).scrollTop(0);
-          $(".popup-overlay, .popup-content").modal("toggle");
+          $("#createInfoModal").modal("toggle");
           location.reload()
-        }, 3000)
+        }, 2500)
       },
       error: function (textStatus, errorThrown) {
         alert('Status: ' + textStatus);
