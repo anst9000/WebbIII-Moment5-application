@@ -11,75 +11,130 @@
 const preUrl = 'http://studenter.miun.se/~anst9000/writeable/dt173g/api/course/';
 
 function submitUpdateForm() {
-  let id = $('#updateid').val()
-  let name = $('#updatename').val()
-  let code = $('#updatecode').val()
-  let progression = $('#updateprogression').val()
-  let syllabus = $('#updatesyllabus').val()
+  let id = $('#updateid').val();
+  let name = $('#updatename').val();
+  let code = $('#updatecode').val();
+  let progression = $('#updateprogression').val();
+  let syllabus = $('#updatesyllabus').val();
 
-  let info = {
+  let data = {
     'id': id,
     'name': name,
     'code': code,
     'progression': progression,
     'syllabus': syllabus
-  }
-  let data = JSON.stringify(info)
+  };
 
-  $.ajax({
-    type: 'PUT',
-    url: preUrl + 'update.php',
-    dataType: 'json',
-    data: data,
-    success: result => {
+  let url = preUrl + 'update.php';
+  let parcel = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+
+  fetch(url, parcel)
+    .then(resp => resp.json())
+    .then(result => {
+      console.log(result);
       $("#updateModal").modal('toggle');
-      $('.modal-body').html("")
+      $('.modal-body').html("");
 
       $("#updateInfoModal").modal("toggle");
       $('#updateInfoModalLabel').text("Det gick bra!");
-      $("#updateInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu uppdaterad</p>")
+      $("#updateInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu uppdaterad</p>");
 
-      window.setTimeout(() => {
-        // removes the modal after 2 sec
-        $(window).scrollTop(0);
-        $("#updateInfoModal").modal("toggle");
-        location.reload()
-      }, 2500)
-    }
-  })
+      slowlyCloseModal();
+    }).catch(err => {
+      console.error("Something went wrong with update request. " + err);
+    });
 }
 
 function submitDeleteForm() {
-  let id = $('#deleteid').val()
-  let name = $('#deletename').val()
-  let info = { 'id': id }
-  let data = JSON.stringify(info)
+  let id = $('#deleteid').val();
+  let name = $('#deletename').val();
+  let data = {
+    'id': id
+  };
 
-  $.ajax({
-    type: 'DELETE',
-    url: preUrl + 'delete.php',
-    dataType: 'json',
-    data: data,
-    success: result => {
+  let url = preUrl + 'delete.php';
+  let parcel = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+
+  fetch(url, parcel)
+    .then(resp => resp.json())
+    .then(result => {
       $('#deleteModal').modal('toggle');
-      $('.modal-body').html("")
+      $('.modal-body').html("");
 
       $("#deleteInfoModal").modal("toggle");
-      $('#deleteInfoModalLabel').text("Det lyckades.")
-      $("#deleteInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu borttagen</p>")
+      $('#deleteInfoModalLabel').text("Det lyckades.");
+      $("#deleteInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu borttagen</p>");
 
-      window.setTimeout(() => {
-        // removes the "active" class to .popup and .popup-content after 2 sec
-        $(window).scrollTop(0);
-        $("#deleteInfoModal").modal("toggle");
-        location.reload()
-      }, 2500)
+      slowlyCloseModal();
+    }).catch(err => {
+      console.error("Something went wrong with delete request. " + err);
+    });
+}
+
+function createCourse() {
+  let data = {};
+  let name = $('#createname').val();
+  let code = $('#createcode').val();
+  let progression = $('#createprogression').val();
+  let syllabus = $('#createsyllabus').val();
+
+  data = {
+    "name": name,
+    "code": code,
+    "progression": progression,
+    "syllabus": syllabus
+  };
+  let url = preUrl + "create.php";
+
+  const parcel = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     },
-    error: function (textStatus, errorThrown) {
-      alert('Status: ' + textStatus);
-      alert('Error: ' + errorThrown);
-    }
-  })
+    body: JSON.stringify(data)
+  };
+
+  console.log("data is " + JSON.stringify(data));
+  console.log('url is ' + url);
+  console.log('parcel is ' + JSON.stringify(parcel));
+
+  fetch(url, parcel)
+    .then(resp => resp.json())
+    .then(result => {
+      console.log(result);
+      $(window).scrollTop(0);
+      $('.modal-body').html("");
+
+      $("#createInfoModal").modal("toggle");
+      $('#createInfoModalLabel').text("Det är klart!");
+      $("#createInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är tillagd.</p>");
+
+      // slowlyCloseModal();
+      console.log(result);
+    }).catch(err => {
+      console.error('There was a problem the POST request: ', err.message);
+    });
+}
+
+function slowlyCloseModal() {
+  window.setTimeout(() => {
+    // removes the "active" class to .popup and .popup-content after 2,5 sec
+    $(window).scrollTop(0);
+    $("#deleteInfoModal").modal("toggle");
+    location.reload();
+  }, 2500);
 }
 
 $(document).ready(_ => {
@@ -88,14 +143,15 @@ $(document).ready(_ => {
   // Show all courses taken
   let allCourses = $('#all-courses');
   let pagination = $('#pagination');
-  let ajaxResult = []
+  let fetchResult = [];
+  let url = preUrl + 'read.php';
 
-  $.ajax({
-    type: 'GET',
-    url: preUrl + 'read.php',
-    dataType: 'json',
-    success: result => {
-      ajaxResult.push(result.records);
+  fetch(url)
+    .then(resp => resp.json())
+    .then(result => {
+      console.log(result.records);
+
+      fetchResult.push(result.records);
 
       let output = `
       <div class="table-responsive">
@@ -112,11 +168,11 @@ $(document).ready(_ => {
         <tbody id="all-courses-table-body">`;
 
       for (let i in result.records) {
-        let postID = result.records[i].id
-        let postName = result.records[i].name
-        let postCode = result.records[i].code
-        let postProg = result.records[i].progression
-        let postLink = result.records[i].syllabus
+        let postID = result.records[i].id;
+        let postName = result.records[i].name;
+        let postCode = result.records[i].code;
+        let postProg = result.records[i].progression;
+        let postLink = result.records[i].syllabus;
 
         output += `
           <tr>
@@ -137,22 +193,24 @@ $(document).ready(_ => {
       allCourses.html(output);
       $('table').addClass('table');
 
+
       // Update an existing course
+      // ==================================================================================
       $(document).on('click', '.edit', (event) => {
-        let entry = ''
-        let modalForm = ''
-        $('#updateModalLabel').empty()
-        $('.modal-body').empty()
+        let entry = '';
+        let modalForm = '';
+        $('#updateModalLabel').empty();
+        $('.modal-body').empty();
 
         // Find the post in array and fill input fields
-        for (let index = 0; index < ajaxResult[0].length; ++index) {
-          entry = ajaxResult[0][index]
+        for (let index = 0; index < fetchResult[0].length; ++index) {
+          entry = fetchResult[0][index];
           if (entry.id === event.target.id) {
-            break
+            break;
           }
         }
 
-        $('#updateModalLabel').append('Uppdatera kursen ' + '<br />').append(entry.name)
+        $('#updateModalLabel').append('Uppdatera kursen ' + '<br />').append(entry.name);
         // Fill Modal
         modalForm = `
           <form name="update">
@@ -169,25 +227,28 @@ $(document).ready(_ => {
               <input type="button" class="btn btn-primary" id="updateButton" value="Spara" onClick="submitUpdateForm()" />
             </div>
           </form>`
-        $('.modal-body').append(modalForm)
+        $('.modal-body').append(modalForm);
       });
+      // ==================================================================================
+
 
       // Delete a course
+      // ==================================================================================
       $(document).on('click', '.remove', (event) => {
-        let entry = ''
-        let modalForm = ''
-        $('#deleteModalLabel').empty()
-        $('.modal-body').empty()
+        let entry = '';
+        let modalForm = '';
+        $('#deleteModalLabel').empty();
+        $('.modal-body').empty();
 
         // Find the post in array and fill input fields
-        for (let index = 0; index < ajaxResult[0].length; ++index) {
-          entry = ajaxResult[0][index]
+        for (let index = 0; index < fetchResult[0].length; ++index) {
+          entry = fetchResult[0][index];
           if (entry.id === event.target.id) {
-            break
+            break;
           }
         }
 
-        $('#deleteModalLabel').append('Ta bort kursen ' + '<br />').append(entry.name)
+        $('#deleteModalLabel').append('Ta bort kursen ' + '<br />').append(entry.name);
         // Fill Modal
         modalForm = `
           <form action="update.php" method="DELETE">
@@ -199,8 +260,10 @@ $(document).ready(_ => {
               <p>, så klickar du på knappen <span id="removeSpan">Ta bort</span></p>
             </div>
           </form>`
-        $('.modal-body').append(modalForm)
+        $('.modal-body').append(modalForm);
       });
+      // ==================================================================================
+
 
       // Using library DataTable. Linking in index.html
       $('#all-courses-table').DataTable({
@@ -221,51 +284,9 @@ $(document).ready(_ => {
           }
         }
       });
-    }
-  });
 
-
-  $('#create').click(event => {
-    event.preventDefault();
-    console.log('Show create courses');
-    let createCourse = $('#create-course');
-    let name = $('#createname').val()
-    let code = $('#createcode').val()
-    let progression = $('#createprogression').val()
-    let syllabus = $('#createsyllabus').val()
-
-    let info = {
-      'name': name,
-      'code': code,
-      'progression': progression,
-      'syllabus': syllabus
-    }
-    let data = JSON.stringify(info)
-
-    $.ajax({
-      type: 'POST',
-      url: preUrl + 'create.php',
-      data: data,
-      dataType: 'json',
-      success: result => {
-        $(window).scrollTop(0);
-        $('.modal-body').html("")
-
-        $("#createInfoModal").modal("toggle");
-        $('#createInfoModalLabel').text("Det är klart!")
-        $("#createInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är tillagd.</p>")
-
-        window.setTimeout(() => {
-          // removes the "active" class to .popup and .popup-content after 2 sec
-          $(window).scrollTop(0);
-          $("#createInfoModal").modal("toggle");
-          location.reload()
-        }, 2500)
-      },
-      error: function (textStatus, errorThrown) {
-        alert('Status: ' + textStatus);
-        alert('Error: ' + errorThrown);
-      }
+      $('#create').click(_ => {
+        createCourse();
+      });
     });
-  });
 });

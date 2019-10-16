@@ -41,16 +41,13 @@
       <!-- Section with add course form -->
       <div class="add-course">
         <h1>Lägg till kurs</h1>
-        <form action="create.php" method="POST">
-          <div class="form-group">
-            Kursnamn<input class="form-control" type="text" name="name" id="createname" /><br />
-            Kurskod<input class="form-control" type="text" name="code" id="createcode" /><br />
-            Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression"
-              id="createprogression" /><br />
-            Länk till kursplan<input class="form-control" type="text" name="syllabus" id="createsyllabus" /><br />
-            <input type="submit" class="btn btn-primary" id="create" value="Spara" />
-          </div>
-        </form>
+        <div class="form-group">
+          Kursnamn<input class="form-control" type="text" name="name" id="createname" /><br />
+          Kurskod<input class="form-control" type="text" name="code" id="createcode" /><br />
+          Nivå (A, B, C, D, E)<input class="form-control" type="text" name="progression" id="createprogression" /><br />
+          Länk till kursplan<input class="form-control" type="text" name="syllabus" id="createsyllabus" /><br />
+          <button type="button" class="btn btn-primary" id="create">Spara</button>
+        </div>
       </div>
       <!-- END Add course form -->
 
