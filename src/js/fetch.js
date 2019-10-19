@@ -35,7 +35,7 @@ function submitUpdateForm() {
       $('#updateInfoModalLabel').text("Det gick bra!");
       $("#updateInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu uppdaterad</p>");
 
-      slowlyCloseModal();
+      slowlyCloseModal('#updateInfoModal');
     }).catch(err => {
       console.error("Something went wrong with update request. " + err);
     });
@@ -68,7 +68,7 @@ function submitDeleteForm() {
       $('#deleteInfoModalLabel').text("Det lyckades.");
       $("#deleteInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är nu borttagen</p>");
 
-      slowlyCloseModal();
+      slowlyCloseModal('#deleteInfoModal');
     }).catch(err => {
       console.error("Something went wrong with delete request. " + err);
     });
@@ -107,17 +107,17 @@ function createCourse() {
       $('#createInfoModalLabel').text("Det är klart!");
       $("#createInfoModal .modal-body").html("<p><span>" + name + "</span></p><br>").append("<p>Kursen är tillagd.</p>");
 
-      slowlyCloseModal();
+      slowlyCloseModal('#createInfoModal');
     }).catch(err => {
       console.error('There was a problem with the POST request: ', err.message);
     });
 }
 
-function slowlyCloseModal() {
+function slowlyCloseModal(element) {
   window.setTimeout(() => {
     // removes the "active" class to .popup and .popup-content after 2,5 sec
     $(window).scrollTop(0);
-    $("#deleteInfoModal").modal("toggle");
+    $(element).modal("toggle");
     location.reload();
   }, 2500);
 }

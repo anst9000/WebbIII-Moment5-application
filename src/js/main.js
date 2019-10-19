@@ -16,6 +16,7 @@ $(document).ready(_ => {
   let pagination = $('#pagination');
   let fetchResult = [];
   let url = preUrl + 'read.php';
+  console.log('url is ' + url);
 
   fetch(url)
     .then(resp => resp.json())

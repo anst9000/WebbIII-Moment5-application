@@ -41,7 +41,7 @@ function htmlTask() {
 // Concatenate and minify js-files
 function jsTask() {
   return src(files.jsPath)
-    .pipe(concat('main.js'))
+    .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(dest('pub/js'))
     .pipe(browserSync.stream())
